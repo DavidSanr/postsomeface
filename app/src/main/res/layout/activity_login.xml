@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/background"
+    >
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:text="Estatus"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+        android:textStyle="bold" />
+
+
+    <EditText
+        android:id="@+id/EmailTxt"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        android:singleLine="false"
+        android:visibility="visible"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        android:autofillHints="" />
+
+
+    <EditText
+        android:id="@+id/passwordTxt"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_pressed"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        />
+
+
+    <Button
+        android:id="@+id/LoginButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/colorAccent"
+        android:text="Login"
+        android:textColor="#FFFF" />
+
+
+    <Button
+        android:id="@+id/RegisterButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/common_google_signin_btn_text_dark_disabled"
+        android:text="Regitrarte"
+        android:textAllCaps="false"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+
+        />
+
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/sign_out_button"
+    android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
+    android:textColor="@color/common_google_signin_btn_text_dark"
+    android:text="Cerrar sesion"
+    />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/verify_email_button"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
+        android:textColor="@color/common_google_signin_btn_text_dark"
+        android:text="Check Email"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/goToAppButton"
+        android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
+        android:textColor="@color/common_google_signin_btn_text_dark"
+        android:text="Post Some!"
+        />
+
+</LinearLayout>
