@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.jean.whatshappening.MainActivity"
+    android:layout_margin="20dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="COMPLETE LOS DATOS DEL DELITO"
+        android:id="@+id/tituloFormulario"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@+id/fotoTomada"
+        android:layout_below="@+id/tituloFormulario"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/botonTomarFoto"
+        android:layout_below="@+id/fotoTomada"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#9de1de"
+        android:text="TOMAR FOTO"/>
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/descripcionDelito"
+        android:layout_below="@+id/botonTomarFoto"
+        android:hint="Descripcion del delito"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/botonEnviar"
+        android:layout_below="@+id/descripcionDelito"
+        android:backgroundTint="#9de1de"
+        android:text="ENVIAR"/>
+
+</RelativeLayout>

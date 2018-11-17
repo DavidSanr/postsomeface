@@ -28,7 +28,10 @@
         android:visibility="visible"
         android:backgroundTint="@color/common_google_signin_btn_text_dark"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:autofillHints="" />
+        android:textColorHighlight="@color/common_google_signin_btn_text_dark_pressed"
+        android:autofillHints=""
+
+        />
 
 
     <EditText
@@ -86,12 +89,11 @@
         />
 
     <Button
+        android:id="@+id/goToAppButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/goToAppButton"
         android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
-        android:textColor="@color/common_google_signin_btn_text_dark"
         android:text="Post Some!"
-        />
+        android:textColor="@color/common_google_signin_btn_text_dark" />
 
 </LinearLayout>

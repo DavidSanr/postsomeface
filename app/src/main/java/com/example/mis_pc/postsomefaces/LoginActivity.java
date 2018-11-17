@@ -173,10 +173,12 @@ public class LoginActivity extends AppCompatActivity implements
             mStatusTextView.setText("Sesion iniciada con: "+user.getEmail());
 
             findViewById(R.id.LoginButton).setVisibility(View.GONE);
+            findViewById(R.id.RegisterButton).setVisibility(View.GONE);
             findViewById(R.id.EmailTxt).setVisibility(View.GONE);
             findViewById(R.id.passwordTxt).setVisibility(View.GONE);
             findViewById(R.id.goToAppButton).setVisibility(View.VISIBLE);
-            findViewById(R.id.RegisterButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.verify_email_button).setVisibility(View.VISIBLE);
 
             findViewById(R.id.verify_email_button).setEnabled(!user.isEmailVerified());
 
@@ -184,10 +186,12 @@ public class LoginActivity extends AppCompatActivity implements
             mStatusTextView.setText("Por favor inicie sesion o cree un cuenta nueva");
 
             findViewById(R.id.LoginButton).setVisibility(View.VISIBLE);
+            findViewById(R.id.RegisterButton).setVisibility(View.VISIBLE);
             findViewById(R.id.EmailTxt).setVisibility(View.VISIBLE);
             findViewById(R.id.passwordTxt).setVisibility(View.VISIBLE);
             findViewById(R.id.goToAppButton).setVisibility(View.GONE);
-            findViewById(R.id.RegisterButton).setVisibility(View.GONE);
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.verify_email_button).setVisibility(View.GONE);
         }
     }
 
