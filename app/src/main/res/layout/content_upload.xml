@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jean.whatshappening.MainActivity"
+    tools:context="com.example.mis_pc.postsomefaces.MainActivity"
     android:layout_margin="20dp">
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="COMPLETE LOS DATOS DEL DELITO"
+        android:text="COMPLETE LOS DATOS DEL POST"
         android:id="@+id/tituloFormulario"
         android:textStyle="bold"
         android:textSize="20dp"
@@ -33,16 +33,16 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/descripcionDelito"
+        android:id="@+id/descripcionPost"
         android:layout_below="@+id/botonTomarFoto"
-        android:hint="Descripcion del delito"
+        android:hint="Descripcion de la foto"
         android:gravity="center"/>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/botonEnviar"
-        android:layout_below="@+id/descripcionDelito"
+        android:layout_below="@+id/descripcionPost"
         android:backgroundTint="#9de1de"
         android:text="ENVIAR"/>
 

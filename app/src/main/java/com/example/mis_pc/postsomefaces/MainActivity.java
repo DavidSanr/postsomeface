@@ -1,24 +1,16 @@
 package com.example.mis_pc.postsomefaces;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.location.Location;
-import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,61 +20,41 @@ import android.widget.Toast;
 
 import com.example.mis_pc.postsomefaces.PostInfo;
 import com.example.mis_pc.postsomefaces.RecyclerAdapter;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
-    static final String Database_Path = "All_Image_Uploads_Database";
+    static final String Database_Path = "post";
 
     //Componentes y widgets
     Button subirFotoBoton;
     Button enviarPostBoton;
     ImageView fotoTomada;
+    EditText ubicacionEdit;
     EditText descripcionEdit;
     TextView userLoggedText;
     Dialog subirFotoDialog;
     RecyclerView rv;
 
-    //Location
-    private FusedLocationProviderClient mFusedLocationClient;
-    protected Location mLastLocation;
-    private String mLatitudeLabel;
-    private String mLongitudeLabel;
-    public String latitude;
-    public String longitude;
-
     public Bitmap ultimaFoto = null;
     DatabaseReference databaseReference;
-    List<PostInfo> postinfo = new ArrayList<>();
+    List<PostInfo> posts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //Obteniendo ubicacion gps
-    //    mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        Toast.makeText(MainActivity.this,"Presiona el boton flotante para publicar un delito",Toast.LENGTH_SHORT).show();
 
         userLoggedText = findViewById(R.id.userLogged);
         userLoggedText.setText(getFirebaseUser().getEmail().toString());
@@ -91,25 +63,28 @@ public class MainActivity extends AppCompatActivity {
         rv = findViewById(R.id.recycler_view);
         rv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setAdapter(new RecyclerAdapter(MainActivity.this, postinfo));
+        rv.setAdapter(new RecyclerAdapter(MainActivity.this, posts));
 
         //Actualizando recycleview con firebase cuando sea necesario
         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                postinfo = new ArrayList<>();
-                for (DataSnapshot PostSnapshot : dataSnapshot.getChildren()) {
+                posts = new ArrayList<>();
+                String firebaseUserEmail = getFirebaseUser().getEmail().toString();
+                for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
 
-                    String foto = PostSnapshot.child("_foto").getValue(String.class);
-                    String ubicacion = PostSnapshot.child("_ubicacion").getValue(String.class);
-                    String descripcion = PostSnapshot.child("_descripcion").getValue(String.class);
-                    String usuario = PostSnapshot.child("_usuario").getValue(String.class);
-                    postinfo.add(new PostInfo(foto, ubicacion, descripcion, usuario));
+                    if (firebaseUserEmail.equals(postSnapShot.child("_usuario").getValue(String.class))) {
+                        String foto = postSnapShot.child("_foto").getValue(String.class);
+                        String ubicacion = postSnapShot.child("_ubicacion").getValue(String.class);
+                        String descripcion = postSnapShot.child("_descripcion").getValue(String.class);
+                        String usuario = postSnapShot.child("_usuario").getValue(String.class);
+                        posts.add(new PostInfo(foto, ubicacion, descripcion, usuario));
+                    }
+                    Collections.reverse(posts);
 
-                    Collections.reverse(postinfo);
 
-                    rv.setAdapter(new RecyclerAdapter(MainActivity.this,postinfo ));
+                    rv.setAdapter(new RecyclerAdapter(MainActivity.this, posts));
                 }
                 rv.getAdapter().notifyDataSetChanged();
             }
@@ -128,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 subirFotoDialog.setContentView(R.layout.content_upload);
                 subirFotoDialog.show();
 
+                //Obteniendo ubicacion gps
 
 
                 //Tomar foto via app camara
@@ -142,18 +118,23 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                //Enviar delito a firebase
-                descripcionEdit = subirFotoDialog.findViewById(R.id.descripcionDelito);
+                //Enviar post a firebase
+                ubicacionEdit = subirFotoDialog.findViewById(R.id.textUbicacion);
+                descripcionEdit = subirFotoDialog.findViewById(R.id.descripcionPost);
                 enviarPostBoton = subirFotoDialog.findViewById(R.id.botonEnviar);
                 enviarPostBoton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (ultimaFoto != null &&
-                                descripcionEdit.getText().toString().length() >0 &&
+//                                ubicacionEdit.getText().toString().length() > 0 &&
+                              descripcionEdit.getText().toString().length() >0 &&
                                 getFirebaseUser().getEmail().toString().length() > 0)
                         {
-                            PostInfo postInfo = new PostInfo(encodeBitmap(ultimaFoto),"geo:"+latitude+","+longitude, descripcionEdit.getText().toString(), getFirebaseUser().getEmail().toString());
-                            enviarPostFirebase(postInfo);
+                            //PostInfo post = new PostInfo(encodeBitmap(ultimaFoto), ubicacionEdit.getText().toString(),
+                            // descripcionEdit.getText().toString(), getFirebaseUser().getEmail().toString());
+                            PostInfo post = new PostInfo(encodeBitmap(ultimaFoto), "Santo domingo",
+                                   descripcionEdit.getText().toString(), getFirebaseUser().getEmail().toString());
+                            enviarPostAFirebase(post);
                             ultimaFoto = null;
                             subirFotoDialog.dismiss();
                             rv.getAdapter().notifyDataSetChanged();
@@ -185,69 +166,14 @@ public class MainActivity extends AppCompatActivity {
         return imageEncoded;
     }
 
-    public void enviarPostFirebase(PostInfo postInfo) {
+    public void enviarPostAFirebase(PostInfo post) {
         String ImageUploadId = databaseReference.push().getKey();
-        databaseReference.child(ImageUploadId).setValue(postInfo);
+        databaseReference.child(ImageUploadId).setValue(post);
 
     }
 
     public FirebaseUser getFirebaseUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (!checkPermissions()) {
-            requestPermissions();
-        } else {
-            getLastLocation();
-        }
-    }
-
-    @SuppressWarnings("MissingPermission")
-    private void getLastLocation() {
-        mFusedLocationClient.getLastLocation()
-                .addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Location> task) {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            mLastLocation = task.getResult();
-
-                            latitude = String.format(Locale.ENGLISH, "%f",mLastLocation.getLatitude());
-                            longitude = String.format(Locale.ENGLISH, "%f",mLastLocation.getLongitude());
-
-                        } else {
-                            Log.w(TAG, "getLastLocation:exception", task.getException());
-
-                        }
-                    }
-                });
-    }
-
-    private boolean checkPermissions() {
-        int permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
-
-    private void startLocationPermissionRequest() {
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-    }
-
-    private void requestPermissions() {
-        boolean shouldProvideRationale =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION);
-        if (shouldProvideRationale) {
-            Log.i(TAG, "Displaying permission rationale to provide additional context.");
-        } else {
-            Log.i(TAG, "Requesting permission");
-            startLocationPermissionRequest();
-        }
     }
 
 }

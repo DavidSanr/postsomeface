@@ -19,12 +19,12 @@
             android:weightSum="10">
 
             <ImageView
-                android:id="@+id/fotoDelito"
+                android:id="@+id/fotoPost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:layout_weight="8"
+                android:layout_weight="5"
                 android:layout_margin="5dp"/>
 
             <LinearLayout
@@ -35,20 +35,20 @@
                 android:layout_margin="5dp">
 
                 <TextView
-                    android:id="@+id/tituloDelitos"
+                    android:id="@+id/tituloPost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DELITO"
+                    android:text="post"
                     android:textStyle="italic"
                     android:textSize="25dp"
                     android:textAlignment="center"
                     android:layout_marginTop="20dp"/>
 
-                <com.facebook.share.widget.ShareButton
-                    android:id="@+id/facebookButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"/>
+                <!--<com.facebook.share.widget.ShareButton-->
+                    <!--android:id="@+id/facebookButton"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10dp"/>-->
 
                 <TextView
                     android:id="@+id/casillaDescripcion"
@@ -66,13 +66,21 @@
                     android:textAlignment="center"
                     android:layout_below="@+id/casillaDescripcion"/>
 
-                <Button
-                    android:id="@+id/irAMaps"
+                <TextView
+                    android:id="@+id/casillaUbicacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:backgroundTint="#9de1de"
-                    android:text="VER UBICACION"/>
+                    android:layout_marginTop="10dp"
+                    android:text="Ubicacion:"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/textUbicacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:layout_below="@+id/casillaUbicacion"/>
 
                 <TextView
                     android:id="@+id/casillaUsuario"
